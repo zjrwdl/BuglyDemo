@@ -1,10 +1,13 @@
 package com.example.rockypzhang.buglydemo;
 
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.tencent.bugly.crashreport.CrashReport;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +30,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void crash(View view){
         int i = 10/0;
-        Log.d("TEST",i+"");
+//        CrashReport.testJavaCrash();
     }
+
+    public void anr(View view){
+//        try {
+//            Thread.sleep(30000);
+//        }catch (Exception e){
+//
+//        }
+        CrashReport.testANRCrash();
+    }
+
+
+    public void nativeCrash(View view){
+        CrashReport.testNativeCrash();
+    }
+
 }
