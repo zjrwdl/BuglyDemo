@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+    public native void createNativeCrash();
 
     public void crash(View view){
         int i = 10/0;
@@ -34,17 +35,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void anr(View view){
-//        try {
-//            Thread.sleep(30000);
-//        }catch (Exception e){
-//
-//        }
         CrashReport.testANRCrash();
     }
 
 
     public void nativeCrash(View view){
-        CrashReport.testNativeCrash();
+//        CrashReport.testNativeCrash();
+        createNativeCrash();
     }
 
 }
