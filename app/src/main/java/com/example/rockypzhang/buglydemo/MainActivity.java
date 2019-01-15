@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
     public void nativeCrash(View view){
 //        CrashReport.testNativeCrash();
         createNativeCrash();
+    }
+
+    public void upgrade(View view){
+        Beta.checkUpgrade(true,false);
     }
 
 }
