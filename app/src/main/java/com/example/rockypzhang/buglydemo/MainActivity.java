@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -49,4 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Beta.checkUpgrade(true,false);
     }
 
+    public void hotfix(View view){
+        Toast.makeText(this,"hot fix test",Toast.LENGTH_LONG).show();
+    }
 }

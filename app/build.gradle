@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'bugly'
+// 依赖插件脚本
+apply from: 'tinker-support.gradle'
 bugly {
     appId = 'd562178d23'
     appKey = '946be6eb-c8de-46ab-9c3b-74091e75a790'
@@ -24,12 +26,28 @@ android {
             abiFilters  'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'//,'armeabi'
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file("../keystore/tempkeystore.jks")
+            storePassword "20190107"
+            keyAlias "key0"
+            keyPassword "20190107"
+        }
+        release {
+            storeFile file("../keystore/tempkeystore.jks")
+            storePassword "20190107"
+            keyAlias "key0"
+            keyPassword "20190107"
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
+            signingConfig signingConfigs.debug
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -51,4 +69,7 @@ dependencies {
 //    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
     compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+    compile "com.android.support:multidex:1.0.1" // 多dex配置
+    // 指定tinker依赖版本（注：应用升级1.3.5版本起，不再内置tinker）
+    compile 'com.tencent.tinker:tinker-android-lib:1.9.9'
 }

@@ -1,6 +1,8 @@
 package com.example.rockypzhang.buglydemo;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.tencent.bugly.Bugly;
@@ -21,5 +23,14 @@ public class MyApp extends Application {
         Bugly.init(getApplicationContext(), "d562178d23", true);
         Beta.checkUpgrade(false,false);
         Log.d("TEST","app init with upgrade");
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // you must install multiDex whatever tinker is installed!
+        MultiDex.install(base);
+        // 安装tinker
+        Beta.installTinker();
     }
 }
