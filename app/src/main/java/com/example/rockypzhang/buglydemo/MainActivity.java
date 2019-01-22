@@ -1,5 +1,6 @@
 package com.example.rockypzhang.buglydemo;
 
+import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hotfix(View view){
-        Toast.makeText(this,"hot fix test",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"hot fix success indeed",Toast.LENGTH_LONG).show();
+    }
+
+    public void newApp(View view){
+        Intent intent = new Intent();
+        intent.setClassName(this,Main2Activity.class.getName());
+        startActivity(intent);
     }
 }
