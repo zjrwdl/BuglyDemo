@@ -17,4 +17,13 @@
         tools:layout_editor_absoluteY="16dp"
         android:onClick="crash"/>
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="javacrash"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:onClick="javacrash"/>
+
 </LinearLayout>
