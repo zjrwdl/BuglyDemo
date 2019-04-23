@@ -7,17 +7,22 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.BuglyStrategy;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.interfaces.BetaPatchListener;
 import com.tencent.bugly.beta.tinker.TinkerManager;
 import com.tencent.bugly.beta.upgrade.UpgradeStateListener;
+import com.tencent.bugly.crashreport.CrashReport;
 
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class MyApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("TEST","MyApp oncreate");
         // 设置是否开启热更新能力，默认为true
         Beta.enableHotfix = true;
         // 设置是否自动下载补丁
@@ -26,6 +31,7 @@ public class MyApp extends Application {
         Beta.canNotifyUserRestart = true;
         // 设置是否自动合成补丁
         Beta.canAutoPatch = true;
+        Beta.autoDownloadOnWifi = true;
         /**
          *  全量升级状态回调
          */
@@ -138,14 +144,34 @@ public class MyApp extends Application {
          * 参数3：是否开启调试模式，调试模式下会输出'CrashReport'tag的日志
          */
 //        CrashReport.initCrashReport(getApplicationContext(), "d562178d23", true);
+        BuglyStrategy strategy = new BuglyStrategy();
+        strategy.setCrashHandleCallback(new CrashReport.CrashHandleCallback(){
+            @Override
+            public synchronized Map<String, String> onCrashHandleStart(int crashType, String errorType, String errorMessage, String errorStack) {
+                LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+                map.put("Key", "Value");
+                Log.d("TEST","onCrashHandleStart");
+                return map;
+            }
+
+            @Override
+            public synchronized byte[] onCrashHandleStart2GetExtraDatas(int crashType, String errorType, String errorMessage, String errorStack) {
+                try {
+                    Log.d("TEST","onCrashHandleStart2GetExtraDatas");
+                    return "Extra data.".getBytes("UTF-8");
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        });
         String processName = Utils.getCurProcessName(this);
         switch (processName){
             case "com.example.rockypzhang.buglydemo":
-                Bugly.init(getApplicationContext(), "d562178d23", true);
+                Bugly.init(getApplicationContext(), "d562178d23", true,strategy);
                 Log.d("TEST","app init with d562178d23");
                 break;
             case "com.example.rockypzhang.buglydemo:new":
-                Bugly.init(getApplicationContext(), "47fe0d9d73", true);
+                Bugly.init(getApplicationContext(), "47fe0d9d73", true,strategy);
                 Log.d("TEST","app init with 47fe0d9d73");
                 break;
             default:

@@ -1,38 +1,30 @@
 package com.example.rockypzhang.buglydemo;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.tencent.bugly.beta.Beta;
-import com.tencent.bugly.beta.tinker.TinkerUtils;
+import com.tencent.bugly.crashreport.BuglyLog;
 import com.tencent.bugly.crashreport.CrashReport;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     NativeCrashJni nativeCrashJni;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        Toast.makeText(this,NativeCrashJni.getInstance().stringFromJNI(),Toast.LENGTH_LONG).show();
-        ThreadWatchDog.getInstance().addThread(new Handler());
-        ThreadWatchDog.getInstance().start();
+        BuglyLog.d("test","onCreate");
+        Toast.makeText(this,NativeCrashJni.getInstance().stringFromJNI(),Toast.LENGTH_LONG).show();
     }
 
 
     public void crash(View view){
 //        int i = 10/0;
-//        CrashReport.testJavaCrash();
+        BuglyLog.d("test","test");
+        CrashReport.testJavaCrash();
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {

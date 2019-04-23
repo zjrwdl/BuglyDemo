@@ -1,12 +1,12 @@
 package com.example.rockypzhang.buglydemo;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.tencent.bugly.crashreport.CrashReport;
 
-public class Main2Activity extends AppCompatActivity {
+public class Main2Activity extends Activity {
     NativeCrashJni nativeCrashJni;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,5 +22,9 @@ public class Main2Activity extends AppCompatActivity {
 
     public void javacrash(View view){
         CrashReport.testJavaCrash();
+    }
+
+    public void anr(View view){
+        CrashReport.testANRCrash();
     }
 }
