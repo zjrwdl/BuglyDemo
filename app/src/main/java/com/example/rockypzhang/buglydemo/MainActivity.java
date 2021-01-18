@@ -3,10 +3,9 @@ package com.example.rockypzhang.buglydemo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import com.tencent.bugly.beta.Beta;
-import com.tencent.bugly.crashreport.BuglyLog;
 import com.tencent.bugly.crashreport.CrashReport;
 
 
@@ -16,55 +15,51 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BuglyLog.d("test","onCreate");
-        Toast.makeText(this,NativeCrashJni.getInstance().stringFromJNI(),Toast.LENGTH_LONG).show();
+        CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(this);
+        userStrategy.setEnableCatchAnrTrace(true);
+        //CrashReport.initCrashReport(this,"d562178d23",true);
+        CrashReport.initCrashReport(this,"d562178d23",true,userStrategy);
+        /*new ANRWatchDog(5000).start();
+        new ANRWatchDog().setANRListener(new ANRWatchDog.ANRListener() {
+            @Override
+            public void onAppNotResponding(ANRError error) {
+                // Handle the error. For example, log it to HockeyApp:
+                Log.d("crashreport","onAppNotResponding");
+            }
+        }).start();*/
+        //UMConfigure.init(this, "5f618418b473963242a023e6", "Umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 
+    public void pthread(View view){
+        NativeCrashJni.getInstance().pthead();
+    }
 
     public void crash(View view){
-//        int i = 10/0;
-        BuglyLog.d("test","test");
         CrashReport.testJavaCrash();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Log.d("TEST","xxxxxxxxxxxxxxxx");
-//                    URL url = new URL("https://www.sina.com");
-//                    HttpURLConnection conn = null;
-//                    CrashReport.setHttpProxy("10.16.85.43",8888);
-//                    if(CrashReport.getHttpProxy() != null) {
-//                        conn = (HttpURLConnection) url.openConnection(CrashReport.getHttpProxy());
-//                    }else {
-//                        conn = (HttpURLConnection) url.openConnection();
-//                    }
-//                    conn.setRequestMethod("GET");
-//                    conn.setConnectTimeout(5*1000);
-//                    conn.setDoInput(true);
-//                    conn.connect();
-//                    System.out.println("response code:"+conn.getResponseCode());
-//                    Log.d("TEST","xx:"+conn.getResponseCode());
-//                } catch (IOException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
     }
 
     public void anr(View view){
-        CrashReport.testANRCrash();
+        try {
+            int trySleep = 0;
+            while (trySleep++ < 30) {
+                Thread.sleep(5000);
+            }
+        } catch (Throwable thr) {
+        }
+    }
+
+    public void nativeAnr(View view){
+        nativeCrashJni = NativeCrashJni.getInstance();
+        nativeCrashJni.createNativeCrash();
     }
 
 
     public void nativeCrash(View view){
-//        CrashReport.testNativeCrash();
         nativeCrashJni = NativeCrashJni.getInstance();
         nativeCrashJni.createNativeCrash();
     }
 
     public void upgrade(View view){
-        Beta.checkUpgrade(true,false);
     }
 
     public void hotfix(View view){
@@ -76,4 +71,25 @@ public class MainActivity extends Activity {
         intent.setClassName(this,Main2Activity.class.getName());
         startActivity(intent);
     }
+
+    public void nativeMallocOomCrash(View view) {
+        Log.d("crashreport","nativeMallocOomCrash");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                NativeCrashJni.getInstance().createNativeOomMallocCrash();
+            }
+        }).start();
+    }
+
+    public void nativeMmapOomCrash(View view) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                NativeCrashJni.getInstance().createNativeOomMmapCrash();
+            }
+        }).start();
+    }
+
+
 }

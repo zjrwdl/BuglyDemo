@@ -17,7 +17,8 @@ public class Main2Activity extends Activity {
 
     public void crash(View view){
 //        CrashReport.testNativeCrash();
-        nativeCrashJni.createNativeCrash();
+        //nativeCrashJni.createNativeCrash();
+        CrashReport.testNativeCrash();
     }
 
     public void javacrash(View view){

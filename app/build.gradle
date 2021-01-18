@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'bugly'
 // 依赖插件脚本
-apply from: 'tinker-support.gradle'
 bugly {
     appId = 'd562178d23'
     appKey = '946be6eb-c8de-46ab-9c3b-74091e75a790'
     debug = true
+    uploadMapping = false
 }
 android {
     repositories {
@@ -16,8 +16,8 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.rockypzhang.buglydemo"
-        minSdkVersion 15
-        targetSdkVersion 28
+        minSdkVersion 26
+        targetSdkVersion 25
         versionCode 1
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,11 +25,13 @@ android {
             cmake {
                 cppFlags ""
                 abiFilters 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'//,'armeabi'
+                //abiFilters 'armeabi-v7a'
             }
         }
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'//,'armeabi'
+            //abiFilters 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'//,'armeabi'
+            abiFilters 'arm64-v8a'
         }
     }
     signingConfigs {
@@ -49,13 +51,13 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.debug
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     externalNativeBuild {
@@ -63,10 +65,16 @@ android {
             path "CMakeLists.txt"
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //implementation(name: 'bugly_crashreport_upgrade-1.3.9', ext: 'aar')
     //implementation 'com.tencent.bugly:crashreport_upgrade:1.3.9'
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -75,13 +83,18 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-//    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
-//    implementation(name: 'bugly_crashreport_upgrade-1.3.8', ext: 'aar')
-//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
-    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+    implementation 'com.github.anrwatchdog:anrwatchdog:1.3.0'
+    //implementation 'com.tencent.bugly:crashreport:3.3.1' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    //implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    //implementation(name: 'bugly_crashreport_upgrade-1.4.3', ext: 'aar')
+    //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    //implementation 'com.tencent.bugly:nativecrashreport:3.7.6'
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
-    implementation "com.android.support:multidex:1.0.1" // 多dex配置
+    implementation 'com.android.support:multidex:1.0.1'
+    // 多dex配置
     // 指定tinker依赖版本（注：应用升级1.3.5版本起，不再内置tinker）
     implementation 'com.tencent.tinker:tinker-android-lib:1.9.9'
+    implementation "com.umeng.umsdk:common:9.1.0"
+    implementation "com.umeng.umsdk:crash:0.0.4" // native crash包依赖(必选)
+    implementation "com.umeng.umsdk:asms:1.1.3" // asms包依赖(必选)
 }

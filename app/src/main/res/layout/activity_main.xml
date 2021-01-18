@@ -9,10 +9,19 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/pthead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="crash"
+        android:text="pthread"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp"
+        android:onClick="pthread"/>
+
+    <Button
+        android:id="@+id/crash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="java crash"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp"
         android:onClick="crash"/>
@@ -27,6 +36,15 @@
         android:onClick="anr"/>
 
     <Button
+        android:id="@+id/nativeAnr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NATIVE_ANR"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="75dp"
+        android:onClick="nativeAnr"/>
+
+    <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,25 +52,32 @@
         android:onClick="nativeCrash"/>
 
     <Button
+        android:id="@+id/button_malloc_oom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NativeMallocOomCrash"
+        android:onClick="nativeMallocOomCrash"/>
+
+    <Button
+        android:id="@+id/button_mmap_oom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NativeMmapOomCrash"
+        android:onClick="nativeMmapOomCrash"/>
+
+<!--    <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="upgrade"
         android:onClick="upgrade"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hotfix"
-            android:onClick="hotfix"/>
-    </LinearLayout>
+        android:text="hotfix"
+        android:onClick="hotfix"/>-->
 
     <Button
         android:id="@+id/button6"
